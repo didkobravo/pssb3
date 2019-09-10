@@ -1,19 +1,15 @@
 <div *ngFor=" let navtile of navtiles; index as i ">
+  
+  <!-- card / nav-tile -->
   <div class="card nav-tile">
-    <div class="card-header" [style.background]=" tileColors[i].header ">
+    
+    <!-- card header -->
+    <h5 class="card-header" [style.background]=" tileColors[i].header ">
+      {{ navtile.name }}
+    </h5>
 
-<!--       [ngClass]=" tileColors[i].header != '#ffffff' ? 'bgcolorischanged' : '' "
-      [cpPosition]="'bottom'" 
-      [cpPositionOffset]="'50%'" 
-      [cpPositionRelativeToArrow]="true" -->
-
-      <h5>
-        <!-- <clr-icon [attr.shape]="navtile.icon"></clr-icon> -->
-        {{ navtile.name }}
-      </h5>
-    </div>
+    <!-- card body -->
     <div class="card-block">
-
       <ul class="nav-tile-links">
         <ng-container *ngFor="let navtilelink of navtile.links">
 
@@ -21,21 +17,20 @@
             
             <li *ngIf="!navtilelink.icon">
               <ng-template [ngIf]=" navtilelink.hasOwnProperty('picker') ">
-                <a href="javascript:void(0)" class="link-normal" (click)="openPicker(navtilelink.picker);">
+                <a href="javascript:void(0)" class="link-normal" (click)="alert(12);openPicker(navtilelink.picker);console.log(navtilelink.picker);">
                   {{ navtilelink.name }}
                 </a>
               </ng-template>
               <ng-template [ngIf]=" !navtilelink.hasOwnProperty('picker') ">
-                <!-- <a [routerLink]="[ navtilelink.route ]" class="link-normal">
+                <a [routerLink]="[ navtilelink.route ]" class="link-normal">
                   {{ navtilelink.name }}
-                </a> -->
-                {{ navtilelink.name }}
+                </a>                
               </ng-template>
 
             </li>
 
-            <!-- [routerLink]="[ navtilelink.route ]" -->
-            <a *ngIf="navtilelink.icon" class="link-normal">
+            <a *ngIf="navtilelink.icon" class="link-normal"
+              [routerLink]="[ navtilelink.route ]">
               <clr-icon [attr.shape]="navtilelink.icon"></clr-icon>
               {{ navtilelink.name }}
             </a>
@@ -63,9 +58,8 @@
                       {{ (nameOption != null) ? nameOption.name : link.nameOptions ? link.nameOptions[0].name : '' }}
                     </a>
 
-                    <clr-dropdown>
+                    <!-- <clr-dropdown>
                       <button type="button" clrDropdownTrigger>
-                        <clr-icon shape="caret down"></clr-icon>
                       </button>
                       <clr-dropdown-menu *clrIfOpen>
                         <button type="button" 
@@ -73,7 +67,7 @@
                           (click)=" nameOption = item "
                           *ngFor="let item of link.nameOptions">{{ item.name }}</button>
                       </clr-dropdown-menu>
-                    </clr-dropdown>
+                    </clr-dropdown> -->
 
                   </div>                  
                 </ng-template>
@@ -104,8 +98,8 @@
               </ng-template>
 
               <ng-template [ngIf]=" !link.hasOwnProperty('picker') ">
-                <!--  [routerLink]="[ link.route ]" -->
-                <a class="link-normal">
+                <a class="link-normal"
+                  [routerLink]="[ link.route ]">
                   {{ link.name }}
                 </a>
               </ng-template>
@@ -115,14 +109,10 @@
 
         </ng-container>
       </ul>
-
     </div>
+    
   </div>
+
+
+
 </div>
-
-
-
-<app-picker 
-  [opened]="opened"
-  [pckr]="pckr"
-  (modalOpenedStateChanged)="onModalOpenedStateChanged( $event )"></app-picker>

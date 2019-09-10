@@ -467,6 +467,7 @@ export class NavTilesComponent implements OnInit {
         ]
       }
     ];
+    this.navtiles = this.tiles;
 
   }
 

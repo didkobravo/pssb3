@@ -25,6 +25,8 @@ import { HomeModule } from './home/home.module';
     AppComponent,
     AppHeaderComponent
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }
