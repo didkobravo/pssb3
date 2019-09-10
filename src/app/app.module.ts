@@ -8,17 +8,21 @@ import { ClarityModule } from '@clr/angular';
 import { AppComponent } from './app.component';
 import { AppHeaderComponent } from './common/app-header/app-header.component';
 
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   imports: [
     BrowserModule, 
     BrowserAnimationsModule, 
     ClarityModule, 
-    FormsModule
+    FormsModule,
+    RouterModule
   ],
   declarations: [
     AppComponent,
-    AppHeaderComponent
+    AppHeaderComponent,
+    HomeComponent
   ],
   bootstrap: [AppComponent]
 })
