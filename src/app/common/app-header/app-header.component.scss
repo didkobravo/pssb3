@@ -1,0 +1,35 @@
+
+$header-height: 1.55rem; // 2.5rem
+$header-background-color: #002538;
+
+// override header height
+////////////////////////////////////
+
+.header, header {
+  height: $header-height;
+}
+header .header-actions,
+header .branding,
+header .header-nav {
+  height: $header-height;
+}
+header .header-nav {
+  .nav-link {
+    padding: 0 1rem 0 .5rem;
+    line-height: $header-height;
+  }
+}
+header .branding {
+  padding: 0 1rem 0 .5rem;
+  > .nav-link,
+  > a {
+    height: $header-height;
+  }
+}
+
+// override header background-color
+////////////////////////////////////
+
+.header.header-2, header.header-2 {
+  background-color: $header-background-color;
+}
