@@ -1,0 +1,135 @@
+:host {
+  ::ng-deep {
+
+    .pricings-dg {
+      .datagrid-expandable-caret-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        -o-appearance: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: 0 0;
+        cursor: pointer;
+        height: 1.25rem;
+        width: 1.25rem;
+        flex-shrink: 0;
+      }
+      .opportunity-row {
+        .datagrid-select {
+          .clr-checkbox-wrapper {
+            display: none;
+          }
+        }
+      }
+      .first-cell {
+        display: flex;
+        // align-items: center;
+        // padding: 0 .5rem 0 .2rem;
+        align-items: baseline;
+        padding: 0 .5rem 0 .5rem;
+        .cell-txt {
+          padding-top: .458333rem;
+        }
+        &.no-clones {
+          padding-left: 35px;
+        }
+        &.is-clone {
+          .cell-txt {
+            padding-left: 30px;
+          }
+          
+        }
+
+      }
+    }
+
+    .modal-body.modal-body-after-selection,
+    .modal-body.modal-body-before-selection {
+      min-height: 50vh;
+      max-height: unset;
+    }
+    .modal-body-before-selection {
+      //  flexbox
+      //  +---------------------------------------+
+      //  |                                       |
+      //  |   search-field                        |
+      //  |                                       |
+      //  +---------------------------------------+
+      //  |                                       |
+      //  |   datagrid                            |
+      //  |                                       |
+      //  |                                       |
+      //  +---------------------------------------+
+      display: flex;
+      flex-direction: column;
+      .do-not-shrink {
+        flex-shrink: 0;
+      }
+      .relative-parent {
+        flex: 1 1 auto;
+        overflow: hidden; // TODO remove this for some reason with Opportunities grid there was some v-scroll
+      }
+    }
+
+    .modal-body-after-selection {
+      //  grid
+      //  +--------------------------------------------+
+      //  |                      |                     |
+      //  |    usr-can-edit      |        notes        |
+      //  |                      |                     |
+      //  +----------------------+                     |
+      //  |                      |                     |
+      //  |    usrs-read-only    |                     |
+      //  |                      |                     |
+      //  +--------------------------------------------+
+      display: grid;
+      grid-template-areas: 
+        "usr-can-edit    notes"
+        "usrs-read-only  notes";
+      grid-template-rows: auto 1fr;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 1rem;
+      grid-row-gap: 1rem;
+      .usr-can-edit {
+        grid-area: usr-can-edit;
+      }
+      .usrs-read-only {
+        grid-area: usrs-read-only;
+      }
+      .notes {
+        grid-area: notes;
+        display: grid;
+        grid-template-rows: [label] auto [quill] 1fr;
+        .quill > .ql-toolbar + .ql-container {
+          height: calc(100% - 43px);
+        }
+      }
+    }
+
+    // ellipsis the text of links insice datagrid-cells
+    .datagrid-cell {
+      .cell-txt {
+        width: 100%;
+      }
+      .ellispis-text,
+      a {
+        display: inline-block;
+        white-space: pre-line;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+      }
+    }
+
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+  }
+}

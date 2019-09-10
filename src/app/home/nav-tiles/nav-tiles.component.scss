@@ -1,0 +1,75 @@
+:host {
+  width: 100%;
+  // display: block;
+  // column-count: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-gap: .5rem;
+  position: relative;
+  // flex: 1 1 auto;
+  
+  ::ng-deep {
+    .nameOptions {
+      display: flex;
+      align-items: center;
+      .dropdown {
+        display: inline-flex;
+      }
+    }
+
+    .nav-tile {
+      display: inline-block;
+      margin-bottom: .2rem;
+      // margin-top: calc(1rem - .2rem);
+      margin-top: 0;
+      h5 {
+        display: flex;
+        align-items: center;
+        margin-top: 0;
+        clr-icon {
+          margin-right: .25rem;
+        }
+      }
+    }
+
+    .nav-tile {
+      .card-header {
+        &.bgcolorischanged {
+          * {
+            color: #ffffff;
+          }
+        }
+      }
+    }
+
+    ul.nav-tile-links {
+      list-style: circle;
+      list-style-position: outside;
+      > div {
+        display: flex;
+        align-items: center;
+        > clr-icon {
+          margin-right: .15rem;
+        }
+        &:not(:first-of-type) {
+          margin-top: .5rem;
+        }
+      }
+      li {
+        margin-left: 38px; //20px;
+        position: relative;
+      }
+
+      li:hover::before {
+        content: "•";
+        color: #565656;
+        position: absolute;
+        left: -20px;
+        top: 0px;
+        font-size: 30px;
+      }
+    }
+
+  }
+}

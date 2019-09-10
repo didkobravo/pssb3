@@ -8,8 +8,9 @@ import { ClarityModule } from '@clr/angular';
 import { AppComponent } from './app.component';
 import { AppHeaderComponent } from './common/app-header/app-header.component';
 
-import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+import { AppRoutingModule } from './app-routing.module';
+
+import { HomeModule } from './home/home.module';
 
 @NgModule({
   imports: [
@@ -17,12 +18,12 @@ import { HomeComponent } from './home/home.component';
     BrowserAnimationsModule, 
     ClarityModule, 
     FormsModule,
-    RouterModule
+    AppRoutingModule,
+    HomeModule
   ],
   declarations: [
     AppComponent,
-    AppHeaderComponent,
-    HomeComponent
+    AppHeaderComponent
   ],
   bootstrap: [AppComponent]
 })
