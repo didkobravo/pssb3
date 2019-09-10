@@ -25,15 +25,16 @@
                 </a>
               </ng-template>
               <ng-template [ngIf]=" !navtilelink.hasOwnProperty('picker') ">
-                <a [routerLink]="[ navtilelink.route ]" class="link-normal">
+                <!-- <a [routerLink]="[ navtilelink.route ]" class="link-normal">
                   {{ navtilelink.name }}
-                </a>
+                </a> -->
+                {{ navtilelink.name }}
               </ng-template>
 
             </li>
 
-            <a *ngIf="navtilelink.icon"
-              [routerLink]="[ navtilelink.route ]" class="link-normal">
+            <!-- [routerLink]="[ navtilelink.route ]" -->
+            <a *ngIf="navtilelink.icon" class="link-normal">
               <clr-icon [attr.shape]="navtilelink.icon"></clr-icon>
               {{ navtilelink.name }}
             </a>
@@ -102,7 +103,8 @@
               </ng-template>
 
               <ng-template [ngIf]=" !link.hasOwnProperty('picker') ">
-                <a [routerLink]="[ link.route ]" class="link-normal">
+                <!--  [routerLink]="[ link.route ]" -->
+                <a class="link-normal">
                   {{ link.name }}
                 </a>
               </ng-template>
