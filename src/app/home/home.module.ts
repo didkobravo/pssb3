@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { NavTilesComponent } from './nav-tiles/nav-tiles.component';
@@ -10,6 +11,7 @@ import { ClarityModule } from '@clr/angular';
   imports: [
     HomeRoutingModule,
     BrowserModule,
+    CommonModule,
     ClarityModule
   ],
   declarations: [

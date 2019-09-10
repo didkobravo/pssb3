@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { OpportunitiesService } from './services/opportunities.service';
 
 import { ClarityModule } from '@clr/angular';
 
@@ -27,6 +28,9 @@ import { HomeModule } from './home/home.module';
   ],
   bootstrap: [
     AppComponent
+  ],
+  providers: [
+    OpportunitiesService
   ]
 })
 export class AppModule { }

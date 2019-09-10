@@ -1,0 +1,457 @@
+<clr-modal 
+  [(clrModalOpen)]="opened" 
+  (clrModalOpenChange)="emmitOpenChange()"
+  [clrModalSize]="'xl'">
+  <h3 class="modal-title">{{ pckr.pckrAction }} {{ pckr.pckrSubject }} ({{ pckr.pckrType }})</h3>
+  <div class="modal-body"
+    [ngClass]="{ 'modal-body-after-selection' : selectedItem && pckr.pckrAction !== 'Download', 'modal-body-before-selection' : !selectedItem || pckr.pckrAction === 'Download' }">
+
+    
+    <!-- search field -->
+    <!-- [hidden]="!isShowMore || persistentSelectionPassed" -->
+    <!-- <app-search-field 
+      [placeholder]="'Search'"
+      [hidden]="selectedItem && pckr.pckrAction !== 'Download'"
+      class="do-not-shrink"></app-search-field> -->
+
+    <!-- datagrid -->
+    <div class="relative-parent" 
+      *ngIf=" !selectedItem || pckr.pckrAction === 'Download'; else showPartAfterSelection ">
+      <div class="absolute-parent">
+
+        <ng-template [ngIf]=" pckr.pckrType === 'transient' ">
+          <ng-template [ngIf]=" pckr.pckrSubject === 'Opportunity' ">
+            <!-- 
+            [(clrDgSingleSelected)]="selectedItem" 
+            [clrDgRowSelection]="true"
+            <clr-dg-column>
+              <ng-container *clrDgHideableColumn="{hidden: !isShowMore}">
+                Assigned To
+              </ng-container>
+            </clr-dg-column>
+            -->
+            <clr-datagrid>
+              <clr-dg-column>Opportunity Name</clr-dg-column>
+              <clr-dg-column>Customer Name</clr-dg-column>
+              
+              <!-- hideable start -->
+              <clr-dg-column>Assigned To</clr-dg-column>
+              <clr-dg-column>Created Date</clr-dg-column>
+              <clr-dg-column>Created By</clr-dg-column>
+              <clr-dg-column>changepointIds</clr-dg-column>
+              <!-- hideable end -->
+
+              <clr-dg-row *ngFor="let item of opportunities" [clrDgItem]="item">
+
+                <clr-dg-cell>
+                  <a [routerLink]="[ '/sb/edit-opportunity/1/' ]" 
+                    class="link-normal">
+                    {{ item.opportunityName }}
+                  </a>
+                </clr-dg-cell>
+                <clr-dg-cell>{{ item.customerName }}</clr-dg-cell>
+                
+                <clr-dg-cell>{{ item.user.fullName }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.created }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.createdBy.fullName }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.changepointIds }}</clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-footer>{{opportunities.length}} opportunities</clr-dg-footer>
+            </clr-datagrid>
+          </ng-template>
+
+          <ng-template [ngIf]=" pckr.pckrSubject === 'Pricing' ">
+            <!-- [(clrDgSelected)]="nTrackBySelected" -->
+            <clr-datagrid class="pricings-dg">
+
+              <clr-dg-column [clrDgField]="'title'">Pricng Name</clr-dg-column>
+              <clr-dg-column [style.width.px]="120">Status</clr-dg-column>
+              <clr-dg-column [style.width.px]="120">Type</clr-dg-column>
+              <clr-dg-column [style.width.px]="120">Deal Type</clr-dg-column>
+              <clr-dg-column>Customer</clr-dg-column>
+              <clr-dg-column>Country</clr-dg-column>
+              <clr-dg-column [style.width.px]="120">Revision</clr-dg-column>
+              <clr-dg-column>Created By</clr-dg-column>
+              <clr-dg-column [style.width.px]="120">Created Date</clr-dg-column>
+
+              <ng-container *ngFor="let item of pricings">
+                
+                <clr-dg-row
+                  *ngIf=" item.opportunityId !== '' "
+                  class="opportunity-row"
+                  [clrDgItem]="item">
+
+                  <clr-dg-cell class="first-cell"
+                    [ngClass]=" item.pricings.length === 0 ? 'no-clones' : '' ">
+
+                    <ng-template [ngIf]=" item.pricings.length > 0 ">
+                      <button type="button"
+                        class="datagrid-expandable-caret-button"
+                        (click)=" item.expanded = !item.expanded ">
+                        <clr-icon shape="caret" 
+                          [attr.dir]=" item.expanded ? 'down' : 'right' "></clr-icon>
+                      </button>
+                    </ng-template>
+                    <div class="cell-txt">
+                      <a [routerLink]="[ '/pricing/create' ]" 
+                        class="link-normal">
+                        {{ item.opportunityName }}
+                      </a>
+                    </div>
+
+                  </clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                </clr-dg-row>
+
+                <ng-container *ngIf="item.expanded">
+
+                  <clr-dg-row 
+                    *ngFor=" let pricing of item.pricings "        
+                    [clrDgItem]="pricing">
+                    <clr-dg-cell class="first-cell"
+                      [ngClass]=" item.opportunityId !== '' ? 'is-clone' : '' ">
+                      <div class="cell-txt">
+                        <a [routerLink]="[ '/pricing/create' ]" 
+                          class="link-normal">
+                          {{ pricing.pricingName }}
+                        </a>
+                      </div>
+                    </clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.status }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.type }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.dealType === 'FIXED_FEE' ? 'Fixed Fee' : 'T&M' }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.customerName }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.salesCountry.name }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.revision }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.createdByFullName }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.created | date }}</clr-dg-cell>        
+                  </clr-dg-row>
+                </ng-container>
+              </ng-container>
+              <clr-dg-footer>
+                <div class="left">
+                </div>
+                <div class="right">
+                  {{ pricings.length }} Pricings
+                </div>
+              </clr-dg-footer>
+            </clr-datagrid>
+          </ng-template>
+
+          <ng-template [ngIf]=" pckr.pckrSubject === 'Customer Story' ">
+            <!-- [(clrDgSelected)]="nTrackBySelected" -->
+            <clr-datagrid>
+              <clr-dg-column [clrDgField]="'title'">Story Name</clr-dg-column>
+              <clr-dg-column [clrDgField]="'status'">Status</clr-dg-column>
+              <clr-dg-column [clrDgField]="'opportunity'">Opportunity</clr-dg-column>
+              <clr-dg-column [clrDgField]="'customerName'">Customer Name</clr-dg-column>
+              <clr-dg-column [clrDgField]="'created'">Date Created</clr-dg-column>
+
+              <clr-dg-row *clrDgItems="let item of customerStories" [clrDgItem]="item">
+                <clr-dg-cell>
+                  <a [routerLink]="[ '/csp/edit/1' ]" 
+                    class="link-normal">
+                    {{ item.title }}
+                  </a>
+                </clr-dg-cell>
+                <clr-dg-cell>{{ item.status }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.opportunity }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.customerName }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.created }}</clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-footer>
+                <div class="left">
+                </div>
+                <div class="right">
+                  {{customerStories.length}} Customer Stories
+                </div>
+              </clr-dg-footer>
+            </clr-datagrid>
+          </ng-template>
+        </ng-template>
+
+        <ng-template [ngIf]=" pckr.pckrType === 'persistent' ">
+          <ng-template [ngIf]=" pckr.pckrSubject === 'Opportunity' ">
+            <!-- 
+            <clr-dg-column>
+              <ng-container *clrDgHideableColumn="{hidden: !isShowMore}">
+                Assigned To
+              </ng-container>
+            </clr-dg-column>
+            -->
+            <clr-datagrid
+              [(clrDgSingleSelected)]="selectedItem" 
+              [clrDgRowSelection]="true">
+              <clr-dg-column>Opportunity Name</clr-dg-column>
+              <clr-dg-column>Customer Name</clr-dg-column>
+              
+              <!-- hideable start -->
+              <clr-dg-column>Assigned To</clr-dg-column>
+              <clr-dg-column>Created Date</clr-dg-column>
+              <clr-dg-column>Created By</clr-dg-column>
+              <clr-dg-column>changepointIds</clr-dg-column>
+              <!-- hideable end -->
+
+              <clr-dg-row *ngFor="let item of opportunities" [clrDgItem]="item">
+
+                <clr-dg-cell>
+                  <!-- <a [routerLink]="[ '/sb/edit-opportunity/1/' ]" 
+                    class="link-normal">
+                    {{ item.opportunityName }}
+                  </a> -->
+                  <div class="ellispis-text">
+                    {{ item.opportunityName }}
+                  </div>
+                </clr-dg-cell>
+                <clr-dg-cell>{{ item.customerName }}</clr-dg-cell>
+                
+                <clr-dg-cell>{{ item.user.fullName }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.created }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.createdBy.fullName }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.changepointIds }}</clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-footer>{{opportunities.length}} opportunities</clr-dg-footer>
+            </clr-datagrid>
+          </ng-template>
+
+          <ng-template [ngIf]=" pckr.pckrSubject === 'Pricing' ">
+            <!-- [(clrDgSelected)]="nTrackBySelected" -->
+            <clr-datagrid 
+              [(clrDgSingleSelected)]="selectedItem" 
+              [clrDgRowSelection]="true"
+              class="pricings-dg">
+
+              <clr-dg-column [clrDgField]="'title'">Pricng Name</clr-dg-column>
+              <clr-dg-column [style.width.px]="120">Status</clr-dg-column>
+              <clr-dg-column [style.width.px]="120">Type</clr-dg-column>
+              <clr-dg-column [style.width.px]="120">Deal Type</clr-dg-column>
+              <clr-dg-column>Customer</clr-dg-column>
+              <clr-dg-column>Country</clr-dg-column>
+              <clr-dg-column [style.width.px]="120">Revision</clr-dg-column>
+              <clr-dg-column>Created By</clr-dg-column>
+              <clr-dg-column [style.width.px]="120">Created Date</clr-dg-column>
+
+              <ng-container *ngFor="let item of pricings">
+                <clr-dg-row
+                  *ngIf=" item.opportunityId !== '' "
+                  class="opportunity-row"
+                  [clrDgItem]="item">
+
+                  <clr-dg-cell class="first-cell"
+                    [ngClass]=" item.pricings.length === 0 ? 'no-clones' : '' ">
+
+                    <ng-template [ngIf]=" item.pricings.length > 0 ">
+                      <button type="button"
+                        class="datagrid-expandable-caret-button"
+                        (click)=" item.expanded = !item.expanded ">
+                        <clr-icon shape="caret" 
+                          [attr.dir]=" item.expanded ? 'down' : 'right' "></clr-icon>
+                      </button>
+                    </ng-template>
+                    <div class="cell-txt">
+                      {{ item.opportunityName }}
+                      <!-- <a [routerLink]="[ '/pricing/create' ]" 
+                        class="link-normal">
+                        {{ item.opportunityName }}
+                      </a> -->
+                    </div>
+
+                  </clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                  <clr-dg-cell></clr-dg-cell>
+                </clr-dg-row>
+
+                <ng-container *ngIf="item.expanded">
+
+                  <clr-dg-row 
+                    *ngFor=" let pricing of item.pricings "        
+                    [clrDgItem]="pricing">
+                    <clr-dg-cell class="first-cell"
+                      [ngClass]=" item.opportunityId !== '' ? 'is-clone' : '' ">
+                      <div class="cell-txt">
+                        {{ pricing.pricingName }}
+                        <!-- <a [routerLink]="[ '/pricing/create' ]" 
+                          class="link-normal">
+                          {{ pricing.pricingName }}
+                        </a> -->
+                      </div>
+                    </clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.status }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.type }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.dealType === 'FIXED_FEE' ? 'Fixed Fee' : 'T&M' }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.customerName }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.salesCountry.name }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.revision }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.createdByFullName }}</clr-dg-cell>
+                    <clr-dg-cell>{{ pricing.created | date }}</clr-dg-cell>        
+                  </clr-dg-row>
+                </ng-container>
+              </ng-container>
+              <clr-dg-footer>
+                <div class="left">
+                </div>
+                <div class="right">
+                  {{ pricings.length }} Pricings
+                </div>
+              </clr-dg-footer>
+            </clr-datagrid>
+          </ng-template>
+
+          <ng-template [ngIf]=" pckr.pckrSubject === 'Customer Story' ">
+            <!-- [(clrDgSelected)]="nTrackBySelected" -->
+            <clr-datagrid
+              [(clrDgSingleSelected)]="selectedItem" 
+              [clrDgRowSelection]="true">
+              <clr-dg-column [clrDgField]="'title'">Story Name</clr-dg-column>
+              <clr-dg-column [clrDgField]="'status'">Status</clr-dg-column>
+              <clr-dg-column [clrDgField]="'opportunity'">Opportunity</clr-dg-column>
+              <clr-dg-column [clrDgField]="'customerName'">Customer Name</clr-dg-column>
+              <clr-dg-column [clrDgField]="'created'">Date Created</clr-dg-column>
+
+              <clr-dg-row *clrDgItems="let item of customerStories" [clrDgItem]="item">
+                <clr-dg-cell>
+                  {{ item.title }}
+                  <!-- <a [routerLink]="[ '/csp/edit/1' ]" 
+                    class="link-normal">
+                    {{ item.title }}
+                  </a> -->
+                </clr-dg-cell>
+                <clr-dg-cell>{{ item.status }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.opportunity }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.customerName }}</clr-dg-cell>
+                <clr-dg-cell>{{ item.created }}</clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-footer>
+                <div class="left">
+                </div>
+                <div class="right">
+                  {{customerStories.length}} Customer Stories
+                </div>
+              </clr-dg-footer>
+            </clr-datagrid>
+          </ng-template>
+        </ng-template>
+
+      </div>
+    </div>
+
+    <ng-template #showPartAfterSelection>
+      
+      <!-- User : that will be able to Edit -->
+      <div class="usr-can-edit">
+        <label>Question:</label>
+        <div>
+          <!-- <ng-select 
+            class="has-width" 
+            [items]="this.users"
+            bindLabel="fullName"
+            bindValue="userId"
+            [multiple]="false"
+            [closeOnSelect]="true"
+            placeholder="Select Question"
+            [(ngModel)]="selectedUserWithEditRights">
+          </ng-select> -->
+        </div>
+      </div>
+
+      <!-- User : that will be able to Edit -->
+      <div class="usrs-read-only">
+        <label>Answers:</label>
+        <div>
+          <!-- <ng-select 
+            class="has-width" 
+            [items]="this.oppService.getAnswers()"
+            bindLabel="fullName"
+            bindValue="userId"
+            [multiple]="true"
+            [closeOnSelect]="true"
+            placeholder="Select Answer"
+            [(ngModel)]="selectedUserReadOnly">
+          </ng-select> -->
+        </div>
+      </div>
+
+      <div class="notes">
+        <label>Notes:</label>
+        <div class="relative-parent">
+          <div class="absolute-parent">
+            <!-- <quill [config]="config" [(value)]="value">
+              <div quillToolbar></div>
+              <div quillContent></div>
+            </quill> -->
+          </div>
+        </div>
+      </div>
+
+    </ng-template>
+
+  </div>
+  <div class="modal-footer">
+
+    <div class="btns-to-the-left">
+      <!-- <button class="btn btn-link do-not-shrink"
+        [hidden]="persistentSelectionPassed"
+        (click)="isShowMore = !isShowMore">Show more</button> -->
+    </div>
+    <div class="btns-to-the-right">
+      <button type="button" class="btn" (click)="opened = false">
+        Home
+      </button>
+
+      <ng-template [ngIf]=" pckr.pckrType === 'persistent' && pckr.pckrAction === 'Share' ">
+        <!-- <button type="button" class="btn" 
+          [ngClass]="{ 'btn-primary' : !persistentSelectionPassed || !selectedItem }"
+          [disabled]="!selectedItem"
+          (click)="persistentSelectionPassed = !persistentSelectionPassed">
+          Select {{ pckr.pckrSubject }}
+        </button>
+        <button type="button" class="btn" 
+          [ngClass]="{ 'btn-primary' : persistentSelectionPassed || selectedItem }"
+          [disabled]="!selectedItem"
+          (click)="persistentSelectionPassed = !persistentSelectionPassed">
+          {{ pckr.pckrAction }}
+        </button> -->
+        <button type="button" class="btn btn-primary" 
+          [disabled]="!selectedItem"
+          (click)="selectedItem = null;">
+          {{ pckr.pckrAction }}
+        </button>
+      </ng-template>
+
+      <ng-template [ngIf]=" pckr.pckrType === 'persistent' && pckr.pckrAction === 'Download' ">
+        <button type="button" class="btn btn-primary" 
+          [disabled]="!selectedItem"
+          (click)="download()">
+          {{ pckr.pckrAction }}
+        </button>
+      </ng-template>
+
+      <ng-template [ngIf]=" pckr.pckrType === 'transient' ">
+        <!-- <button type="button" class="btn btn-primary" 
+          [ngClass]="{ 'btn-primary' : persistentSelectionPassed }"
+          [disabled]="!selectedItem"
+          (click)="closePckr();">
+          {{ pckr.pckrAction }}
+        </button> -->
+      </ng-template>
+    </div>
+
+  </div>
+</clr-modal>

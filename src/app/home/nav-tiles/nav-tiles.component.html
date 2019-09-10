@@ -47,7 +47,7 @@
               <ng-template [ngIf]=" link.hasOwnProperty('picker') ">
                 <ng-template [ngIf]=" !link.hasOwnProperty('nameOptions') && !link.hasOwnProperty('nameOptions2') ">
                   <a href="javascript:void(0)" class="link-normal" (click)="openPicker(link.picker);">
-                    {{ link.name }}
+                    {{ link.name }}{{link.picker}}
                   </a>
                 </ng-template>
                 <ng-template [ngIf]=" link.hasOwnProperty('nameOptions') ">
@@ -116,3 +116,8 @@
 
 
 </div>
+
+<app-picker 
+  [opened]="opened"
+  [pckr]="pckr"
+  (modalOpenedStateChanged)="onModalOpenedStateChanged( $event )"></app-picker>
