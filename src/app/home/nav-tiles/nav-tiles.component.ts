@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+// , ViewContainerRef
+import { ClarityIcons } from '@clr/icons';
+import '@clr/icons/shapes/all-shapes';
 
 @Component({
   selector: 'app-nav-tiles',
@@ -24,7 +27,7 @@ export class NavTilesComponent implements OnInit {
   @Input() filterBy: string = '';
 
   constructor(
-    public vcRef: ViewContainerRef
+    // public vcRef: ViewContainerRef
   ) { }
 
   ngOnInit() {

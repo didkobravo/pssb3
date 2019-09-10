@@ -1,11 +1,12 @@
 <div *ngFor=" let navtile of navtiles; index as i ">
   <div class="card nav-tile">
-    <div class="card-header"
-      [ngClass]=" tileColors[i].header != '#ffffff' ? 'bgcolorischanged' : '' "
-      [style.background]=" tileColors[i].header " 
+    <div class="card-header" [style.background]=" tileColors[i].header ">
+
+<!--       [ngClass]=" tileColors[i].header != '#ffffff' ? 'bgcolorischanged' : '' "
       [cpPosition]="'bottom'" 
       [cpPositionOffset]="'50%'" 
-      [cpPositionRelativeToArrow]="true">
+      [cpPositionRelativeToArrow]="true" -->
+
       <h5>
         <clr-icon [attr.shape]="navtile.icon"></clr-icon>
         {{ navtile.name }}
