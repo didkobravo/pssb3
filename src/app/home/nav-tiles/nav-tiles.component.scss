@@ -34,9 +34,17 @@
     }
 
     .nav-tile {
+      
       .card-header {
         color: #ffffff;
+        padding: .5rem;
+        height: 1.5rem;
       }
+      .card-block {
+        padding: .5rem;
+      }
+
+
     }
 
     ul.nav-tile-links {
