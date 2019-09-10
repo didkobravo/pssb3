@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ClarityIcons } from '@clr/icons';
+import '@clr/icons/shapes/all-shapes';
 
 
 @Component({
